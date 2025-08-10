@@ -1,0 +1,7 @@
+{
+  "full_name": "Your Name",
+  "email": "email@example.com",
+  "project_python_name": "project_name",
+  "project_description": "A command line tool for managing something",
+  "github_organization": "your-github-organization"
+}
