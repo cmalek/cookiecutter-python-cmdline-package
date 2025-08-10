@@ -23,7 +23,7 @@ Setting up your development environment
 
 .. code-block:: shell
 
-    $
+    $ curl -fsSL https://astral.sh/uv/install | sh
     $ uv venv
     $ uv sync --dev
 

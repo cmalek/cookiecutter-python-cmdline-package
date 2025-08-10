@@ -9,7 +9,7 @@ Getting Help
 ------------
 
 Basic Help
-~~~~~~~~~~
+^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -55,7 +55,7 @@ Group1 Commands
 The ``group1`` command group provides tools for __FILL_ME_IN__.
 
 Feature 1 Usage
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 Analyze __FILL_ME_IN__ to understand the setup:
 
@@ -86,7 +86,7 @@ Group2 Commands
 The ``group2`` command group provides tools for __FILL_ME_IN__.
 
 Feature 2 Usage
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 List all available AWS services from botocore definitions:
 
@@ -118,7 +118,7 @@ Example output:
 
 
 Show Settings
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
     # Use JSON output
     {{cookiecutter.project_python_name}} --output json settings show
@@ -141,7 +141,7 @@ Output Formats
 --------------
 
 JSON Format
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -152,7 +152,7 @@ JSON Format
     {{cookiecutter.project_python_name}} --output json settings show > settings.json
 
 Table Format (Default)
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -166,7 +166,7 @@ Table Format (Default)
     {{cookiecutter.project_python_name}} settings show
 
 Text Format
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -186,7 +186,7 @@ Examples
 --------
 
 Basic Usage Examples
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -200,7 +200,7 @@ Basic Usage Examples
     {{cookiecutter.project_python_name}} settings show
 
 Advanced Usage Examples
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -211,7 +211,7 @@ Advanced Usage Examples
     {{cookiecutter.project_python_name}} group2 feature2 --arg1 "foo" --arg2 "bar"
 
 Scripting Examples
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -229,7 +229,7 @@ Error Handling
 --------------
 
 Common Error Scenarios
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 **Error 1**
 
@@ -246,7 +246,7 @@ Troubleshooting
 ---------------
 
 Debugging Commands
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 

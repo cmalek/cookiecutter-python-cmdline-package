@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from importlib.metadata import Distribution
 import json
+import os
 import sys
 
 import click
@@ -41,9 +42,13 @@ def cli(
     ctx.obj["output"] = output
     ctx.obj["config_file"] = config_file
 
+    if config_file:
+        # This will be picked up by the Settings class's settings_customize_sources method
+        os.environ["{{cookiecutter.project_python_name|upper}}_CONFIG_FILE"] = config_file
+
     # Load settings
     try:
-        settings = Settings.from_file(config_file) if config_file else Settings()
+        settings = Settings()
         ctx.obj["settings"] = settings
     except Exception as e:  # noqa: BLE001
         print_error(f"Failed to load configuration: {e}")

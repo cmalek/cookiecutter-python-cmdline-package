@@ -1,6 +1,29 @@
 # cookiecutter-python-cmdline-package
 
-This cookiecutter template constructs a new python click + rich command line package suitable for publishing to PyPI and documentation to readthedocs.org
+This cookiecutter template constructs a new python [click](https://click.palletsprojects.com/en/stable/) + [rich](https://rich.readthedocs.io/en/stable/introduction.html) command line package suitable for publishing to PyPI,  and for publishing documentation to readthedocs.org.
+
+## Features of projects produced with this cookiecutter
+
+* Python 3.11+ ready
+* __Modern package configuration__: `pyproject.toml` provided, with default sets of packages (`click`, `rich` and `pydantic`, `pydantic-settings`), `ruff` configuration, python build configuration
+* __Package management__: `uv` for package management
+* __Autoenv__: [autoenv](https://github.com/hyperupcall/autoenv) ready for activating and deactivating your virtualenv when you move in and out of the project.
+* __Versioning__ Uses `bumpversion` to handle versioning.
+* __Settings management__: Built in configuration management system
+
+    * A `pydantic-settings` `Settings` object with a default set of fields.
+    * Cascacding TOML based config files: in `/etc/`, in the user's home directory, in the current directory, and finally via command line options
+    * Environment variables work also to configure your command line tool's settings
+
+* Two default commands:
+
+    * `version`: print the version number, as well as the versions of major important packages
+    * `settings`: print all the settings after dealing with defaults, config files and environment variables
+
+* __Licensing__: MIT licensed by default, though, of course, you can change that.
+* __Documentation__: Comes with a full skeleton for a set of Sphinx documentation ready for you to expand (in `doc`), including a "How to contribute" page. Plus a reasonable `.readthedocs.yaml` ready for use.
+* __Github hooks__: Comes with one hook, which generates a new `requirements.txt` from `uv.lock` every time you push to master.  This is important for readthedocs.org, which can't work with `uv` yet.
+* __Helper scripts__: `Makefile` with useful targets, plus `bin/release.sh` which will check that everything has been committed to git, check that the last commit was a `bumpversion` commit, push your code up to `origin` and release to PyPI via `twine`
 
 ## Usage
 

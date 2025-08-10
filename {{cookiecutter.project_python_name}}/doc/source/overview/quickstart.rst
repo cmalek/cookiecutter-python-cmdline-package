@@ -26,21 +26,21 @@ Basic Usage
 -----------
 
 Get Help
-~~~~~~~~
+^^^^^^^^
 
 .. code-block:: bash
 
     # Show main help
-    tfmate --help
+    {{cookiecutter.project_python_name}} --help
 
     # Show help for specific command groups
-    tfmate analyze --help
-    tfmate aws --help
-    tfmate terraform --help
-    tfmate settings --help
+    {{cookiecutter.project_python_name}} group1 --help
+    {{cookiecutter.project_python_name}} group2 --help
+    {{cookiecutter.project_python_name}} group3 --help
+    {{cookiecutter.project_python_name}} settings --help
 
 Feature 1 Usage
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -52,7 +52,7 @@ Feature 1 Usage
 
 
 Feature 2 Usage
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -63,7 +63,7 @@ Feature 2 Usage
     {{cookiecutter.project_python_name}} group2 feature2 --arg "foo" --arg "bar"
 
 Output Formats
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 .. code-block:: bash
 

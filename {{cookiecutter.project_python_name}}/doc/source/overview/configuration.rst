@@ -16,25 +16,26 @@ The ``{{cookiecutter.project_python_name}}`` command line tool supports multiple
 loaded in order of priority:
 
 1. **Command-line options** (highest priority)
-2. **Environment variables**
-3. **Configuration files**
+2. **Environment variables** in the shell environment
+3. **Configuration files**: a cascade of TOML files, most specific wins.
 4. **Default values** (lowest priority)
 
 Configuration Files
 -------------------
 
 File Locations
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 Configuration files are searched in this order:
 
 1. **Global configuration**: ``/etc/{{cookiecutter.project_python_name}}.toml`` (Unix/Linux) or ``C:/ProgramData/{{cookiecutter.project_python_name}}.toml`` (Windows)
 2. **User configuration**: ``~/.cookiecutter.project_python_name}}/config.toml``
 3. **Local configuration**: ``./{{cookiecutter.project_python_name}}.toml`` (current directory)
-4. **Explicit configuration**: Path specified with ``--config-file`` option
+4. **Environment variables**: via the ``{{cookiecutter.project_python_name|upper}}_CONFIG_FILE`` environment variable
+5. **Explicit configuration**: Path specified with ``--config-file`` option
 
 File Format
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 Configuration files use TOML format:
 
@@ -50,7 +51,7 @@ Configuration files use TOML format:
     log_file = "/var/log/tfmate.log"
 
 Configuration Options
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 **Application Settings**
     - **app_name**: Application name (default: ``{{cookiecutter.project_python_name}}``)
@@ -61,14 +62,6 @@ Configuration Options
     - **enable_colors**: Enable colored output (default: ``true``)
     - **quiet_mode**: Enable quiet mode (default: ``false``)
 
-**AWS Settings**
-    - **aws_default_region**: Default AWS region (default: ``None``)
-    - **aws_default_profile**: Default AWS profile (default: ``None``)
-
-**Terraform Settings**
-    - **terraform_timeout**: Terraform operation timeout in seconds (default: ``30``)
-    - **terraform_max_retries**: Maximum retries for Terraform operations (default: ``3``)
-
 **Logging Settings**
     - **log_level**: Logging level - ``DEBUG``, ``INFO``, ``WARNING``, ``ERROR`` (default: ``INFO``)
     - **log_file**: Log file path (default: ``None``)
@@ -77,63 +70,51 @@ Environment Variables
 ---------------------
 
 You can set configuration using environment variables. Environment variables
-follow the pattern ``tfmate_<SETTING_NAME>``:
+follow the pattern ``{{cookiecutter.project_python_name|upper}}_<SETTING_NAME>``:
 
 .. code-block:: bash
 
-    # Set AWS region
-    export tfmate_AWS_DEFAULT_REGION="us-west-2"
-
     # Set output format
-    export tfmate_DEFAULT_OUTPUT_FORMAT="json"
-
-    # Set Terraform timeout
-    export tfmate_TERRAFORM_TIMEOUT="60"
+    export {{cookiecutter.project_python_name|upper}}_DEFAULT_OUTPUT_FORMAT="json"
 
     # Set log level
-    export tfmate_LOG_LEVEL="DEBUG"
+    export {{cookiecutter.project_python_name|upper}}_LOG_LEVEL="DEBUG"
 
 Environment Variable Mapping
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``tfmate_APP_NAME`` → ``app_name``
-- ``tfmate_APP_VERSION`` → ``app_version``
-- ``tfmate_DEFAULT_OUTPUT_FORMAT`` → ``default_output_format``
-- ``tfmate_ENABLE_COLORS`` → ``enable_colors``
-- ``tfmate_QUIET_MODE`` → ``quiet_mode``
-- ``tfmate_AWS_DEFAULT_REGION`` → ``aws_default_region``
-- ``tfmate_AWS_DEFAULT_PROFILE`` → ``aws_default_profile``
-- ``tfmate_TERRAFORM_TIMEOUT`` → ``terraform_timeout``
-- ``tfmate_TERRAFORM_MAX_RETRIES`` → ``terraform_max_retries``
-- ``tfmate_LOG_LEVEL`` → ``log_level``
-- ``tfmate_LOG_FILE`` → ``log_file``
+- ``{{cookiecutter.project_python_name|upper}}_DEFAULT_OUTPUT_FORMAT`` → ``default_output_format``
+- ``{{cookiecutter.project_python_name|upper}}_ENABLE_COLORS`` → ``enable_colors``
+- ``{{cookiecutter.project_python_name|upper}}_QUIET_MODE`` → ``quiet_mode``
+- ``{{cookiecutter.project_python_name|upper}}_LOG_LEVEL`` → ``log_level``
+- ``{{cookiecutter.project_python_name|upper}}_LOG_FILE`` → ``log_file``
 
 Command-Line Options
 --------------------
 
 Global Options
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 All commands support these global options:
 
 .. code-block:: bash
 
     # Enable verbose output
-    tfmate --verbose command
+    {{cookiecutter.project_python_name}} --verbose command
 
     # Suppress all output except errors
-    tfmate --quiet command
+    {{cookiecutter.project_python_name}} --quiet command
 
     # Specify custom configuration file
-    tfmate --config-file /path/to/config.toml command
+    {{cookiecutter.project_python_name}} --config-file /path/to/config.toml command
 
     # Choose output format
-    tfmate --output json command
-    tfmate --output table command
-    tfmate --output text command
+    {{cookiecutter.project_python_name}} --output json command
+    {{cookiecutter.project_python_name}} --output table command
+    {{cookiecutter.project_python_name}} --output text command
 
 Option Reference
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 **--verbose, -v**
     Enable verbose output with detailed logging.
@@ -141,7 +122,7 @@ Option Reference
     Example:
     .. code-block:: bash
 
-        tfmate --verbose analyze config
+        {{cookiecutter.project_python_name}} --verbose group command
 
 **--quiet, -q**
     Suppress all output except errors.
@@ -149,7 +130,7 @@ Option Reference
     Example:
     .. code-block:: bash
 
-        tfmate --quiet aws services
+        {{cookiecutter.project_python_name}} --quiet group command
 
 **--config-file**
     Specify a custom configuration file path.
@@ -157,7 +138,7 @@ Option Reference
     Example:
     .. code-block:: bash
 
-        tfmate --config-file ./custom-config.toml analyze config
+        {{cookiecutter.project_python_name}} --config-file ./custom-config.toml group command
 
 **--output**
     Choose output format: ``json``, ``table``, or ``text``.
@@ -167,138 +148,97 @@ Option Reference
     Example:
     .. code-block:: bash
 
-        tfmate --output json aws services
+        {{cookiecutter.project_python_name}} --output json group command
 
 Configuration Examples
 ----------------------
 
 Basic Setup
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 For basic usage with defaults:
 
 .. code-block:: toml
 
-    # ~/.config/tfmate/config.toml
+    # ~/.{{cookiecutter.project_python_name}}.toml
     # No configuration file needed - defaults work for most cases
 
 Development Environment
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 For development and testing:
 
 .. code-block:: toml
 
-    # ~/.config/tfmate/config.toml
-    [tfmate]
+    # ~/.{{cookiecutter.project_python_name}}.toml
     default_output_format = "json"
     enable_colors = true
     log_level = "DEBUG"
-    terraform_timeout = 10
-    terraform_max_retries = 1
 
 Production Environment
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 For production systems:
 
 .. code-block:: toml
 
-    # /etc/tfmate/config.toml
-    [tfmate]
+    # /etc/{{cookiecutter.project_python_name}}.toml
     default_output_format = "table"
     enable_colors = false
     log_level = "WARNING"
-    terraform_timeout = 60
-    terraform_max_retries = 5
-    log_file = "/var/log/tfmate.log"
+    log_file = "/var/log/{{cookiecutter.project_python_name}}.log"
 
 AWS-Specific Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For AWS-focused workflows:
 
 .. code-block:: toml
 
     # ~/.config/tfmate/config.toml
-    [tfmate]
     aws_default_region = "us-west-2"
     aws_default_profile = "production"
     terraform_timeout = 45
     terraform_max_retries = 3
 
 Scripting Configuration
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 For automation and scripting:
 
 .. code-block:: toml
 
-    # ~/.config/tfmate/config.toml
-    [tfmate]
+    # ~/.{{cookiecutter.project_python_name}}.toml
     default_output_format = "json"
     enable_colors = false
     quiet_mode = true
     log_level = "ERROR"
 
-Network-Specific Configuration
-------------------------------
-
-Slow Networks
-~~~~~~~~~~~~~
-
-For slow or unreliable networks:
-
-.. code-block:: toml
-
-    # ~/.config/tfmate/config.toml
-    [tfmate]
-    terraform_timeout = 120
-    terraform_max_retries = 5
-    log_level = "INFO"
-
 Security Considerations
 -----------------------
 
 Configuration File Security
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Protect your configuration files:
 
 .. code-block:: bash
 
     # Set proper permissions for user configuration
-    chmod 600 ~/.config/tfmate/config.toml
+    chmod 600 ~/.{{cookiecutter.project_python_name}}.toml
 
     # For system-wide configuration
-    chmod 640 /etc/tfmate/config.toml
-    chown root:root /etc/tfmate/config.toml
+    chmod 640 /etc/{{cookiecutter.project_python_name}}.toml
+    chown root:root /etc/{{cookiecutter.project_python_name}}.toml
 
 Environment Variable Security
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Secure environment variable usage:
 
 .. code-block:: bash
 
-    # Set variables for current session only
-    export tfmate_AWS_DEFAULT_REGION="us-west-2"
-
-    # Clear sensitive variables when done
-    unset tfmate_AWS_DEFAULT_REGION
-    unset tfmate_AWS_DEFAULT_PROFILE
-
-Troubleshooting Configuration
------------------------------
-
-Configuration Debugging
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Check which configuration is being used:
-
-.. code-block:: python
-
-    from tfmate.settings import Settings
+    from {{cookiecutter.project_python_name}}.settings import Settings
 
     # Load and display configuration
     settings = Settings()
@@ -307,7 +247,7 @@ Check which configuration is being used:
     print(f"AWS region: {settings.aws_default_region}")
 
 Common Issues
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 **Configuration Not Loaded**
     - Check file permissions
@@ -321,7 +261,7 @@ Common Issues
     - Ensure boolean values are ``true``/``false``, not ``True``/``False``
 
 **Environment Variables Not Recognized**
-    - Check variable names (must start with ``tfmate_``)
+    - Check variable names (must start with ``{{cookiecutter.project_python_name|upper}}_``)
     - Restart terminal session
     - Verify variable values
 
@@ -334,19 +274,17 @@ Configuration Validation
 ------------------------
 
 Validation Rules
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 The library validates configuration:
 
 - **default_output_format**: Must be one of ``table``, ``json``, or ``text``
-- **terraform_timeout**: Must be a positive integer
-- **terraform_max_retries**: Must be a non-negative integer
 - **log_level**: Must be one of ``DEBUG``, ``INFO``, ``WARNING``, or ``ERROR``
 - **enable_colors**: Must be a boolean value
 - **quiet_mode**: Must be a boolean value
 
 Error Messages
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 Common validation errors:
 
@@ -355,9 +293,6 @@ Common validation errors:
     # Invalid output format
     Error: Invalid default_output_format value
 
-    # Invalid timeout
-    Error: terraform_timeout must be a positive integer
-
     # Invalid log level
     Error: log_level must be one of DEBUG, INFO, WARNING, ERROR
 
@@ -365,11 +300,11 @@ Best Practices
 --------------
 
 Configuration Management
-~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. **Use configuration files for defaults**
 
-   - Set common settings in ``~/.config/tfmate/config.toml``
+   - Set common settings in ``~/.{{cookiecutter.project_python_name}}.toml``
    - Use environment variables for overrides
    - Use command-line options for one-time changes
 
@@ -401,113 +336,71 @@ Configuration Templates
 -----------------------
 
 Basic Template
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 .. code-block:: toml
 
     # config.toml.template
     # Application settings
-    [tfmate]
-    app_name = "tfmate"
-    app_version = "0.1.0"
-
+    [{{cookiecutter.project_python_name}}]
     # Output settings
     default_output_format = "table"
     enable_colors = true
     quiet_mode = false
-
-    # AWS settings
-    aws_default_region = "us-west-2"
-    aws_default_profile = "default"
-
-    # Terraform settings
-    terraform_timeout = 30
-    terraform_max_retries = 3
 
     # Logging settings
     log_level = "INFO"
     log_file = null
 
 Production Template
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: toml
 
     # production.toml
     # Application settings
-    [tfmate]
-    app_name = "tfmate"
-    app_version = "0.1.0"
+    [{{cookiecutter.project_python_name}}]
 
     # Output settings
     default_output_format = "table"
     enable_colors = false
     quiet_mode = false
 
-    # AWS settings
-    aws_default_region = "us-west-2"
-    aws_default_profile = "production"
-
-    # Terraform settings
-    terraform_timeout = 60
-    terraform_max_retries = 5
-
     # Logging settings
     log_level = "WARNING"
-    log_file = "/var/log/tfmate.log"
+    log_file = "/var/log/{{cookiecutter.project_python_name}}.log"
 
 Development Template
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: toml
 
     # development.toml
     # Application settings
     [tfmate]
-    app_name = "tfmate"
-    app_version = "0.1.0"
-
     # Output settings
     default_output_format = "json"
     enable_colors = true
     quiet_mode = false
-
-    # AWS settings
-    aws_default_region = "us-east-1"
-    aws_default_profile = "dev"
-
-    # Terraform settings
-    terraform_timeout = 10
-    terraform_max_retries = 1
 
     # Logging settings
     log_level = "DEBUG"
     log_file = null
 
 Scripting Template
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 .. code-block:: toml
 
     # scripting.toml
     # Application settings
-    [tfmate]
-    app_name = "tfmate"
-    app_version = "0.1.0"
+    [{{cookiecutter.project_python_name}}]
 
     # Output settings
     default_output_format = "json"
     enable_colors = false
     quiet_mode = true
 
-    # AWS settings
-    aws_default_region = "us-west-2"
-    aws_default_profile = "automation"
-
-    # Terraform settings
-    terraform_timeout = 45
-    terraform_max_retries = 3
-
     # Logging settings
     log_level = "ERROR"
-    log_file = null
+    log_file = "/dev/stdout"

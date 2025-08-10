@@ -6,28 +6,42 @@ import os
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field
+from pydantic_settings import (
+    BaseSettings,
+    SettingsConfigDict,
+    PydanticBaseSettingsSource,
+    TomlConfigSettingsSource,
+)
 
 
 class Settings(BaseSettings):
     """
     Application settings with cascading configuration support.
+
+    Note:
+
+        The app_name and app_version fields are readonly (frozen=True) and
+        cannot be overridden via configuration files or environment variables.
+        Other fields remain configurable as normal.
     """
 
     model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
         extra="ignore",
-        env_prefix="tfmate_",
+        env_prefix="{{cookiecutter.project_python_name|upper}}_",
     )
 
-    # Application settings
+    # Application settings (readonly - cannot be overridden via configuration)
     app_name: str = Field(
-        default="{{cookiecutter.project_python_name}}", description="Application name"
+        default="{{cookiecutter.project_python_name}}",
+        description="Application name",
+        frozen=True,
     )
-    app_version: str = Field(default="0.1.0", description="Application version")
+    app_version: str = Field(
+        default="0.1.0", description="Application version", frozen=True
+    )
+
+    # Write-able settings
 
     # Output settings
     default_output_format: Literal["table", "json", "text"] = Field(
@@ -43,7 +57,14 @@ class Settings(BaseSettings):
     log_file: str | None = Field(default=None, description="Log file path")
 
     @classmethod
-    def from_file(cls, config_file: str | None = None) -> "Settings":
+    def settings_customize_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
         """
         Load settings from file with cascading configuration.
 
@@ -61,12 +82,11 @@ class Settings(BaseSettings):
         if os.name == "nt":  # Windows
             global_config = (
                 Path(os.environ.get("PROGRAMDATA", "C:/ProgramData"))
-                / "{{cookiecutter.project_python_name}}"
-                / "config.toml"
+                / ".{{cookiecutter.project_python_name}}.toml"
             )
         else:  # Unix-like
             global_config = Path(
-                "/etc/{{cookiecutter.project_python_name}}/config.toml"
+                "/etc/{{cookiecutter.project_python_name}}/.{{cookiecutter.project_python_name}}.toml"
             )
 
         if global_config.exists():
@@ -74,19 +94,19 @@ class Settings(BaseSettings):
 
         # User home configuration
         user_config = (
-            Path.home()
-            / ".config"
-            / "{{cookiecutter.project_python_name}}"
-            / "config.toml"
+            Path.home() / ".config" / ".{{cookiecutter.project_python_name}}.toml"
         )
         if user_config.exists():
             config_paths.append(user_config)
 
         # Local configuration
-        local_config = Path.cwd() / "{{cookiecutter.project_python_name}}.toml"
+        local_config = Path.cwd() / ".{{cookiecutter.project_python_name}}.toml"
         if local_config.exists():
             config_paths.append(local_config)
 
+        config_file = os.environ.get(
+            "{{cookiecutter.project_python_name|upper}}_CONFIG_FILE"
+        )
         # Explicit configuration file (highest precedence)
         if config_file:
             explicit_config = Path(config_file)
@@ -97,7 +117,7 @@ class Settings(BaseSettings):
         if config_paths:
             # Use the last (highest precedence) config file
             config_file_path = config_paths[-1]
-            return cls(_env_file=config_file_path, _env_file_encoding="utf-8")
+            return (TomlConfigSettingsSource(settings_cls, config_file_path),)
 
         # Fall back to environment variables and defaults
         return cls()
@@ -105,6 +125,7 @@ class Settings(BaseSettings):
     def get_config_paths(self) -> list[Path]:
         """
         Get list of configuration file paths that were loaded.
+        Use this for debugging.
 
         Returns:
             List of configuration file paths

@@ -163,7 +163,7 @@ Are there any limitations?
 Can I use {{cookiecutter.project_python_name}} in CI/CD pipelines?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Yes, tfmate is designed to work in CI/CD environments:
+Yes, {{cookiecutter.project_python_name}} is designed to work in CI/CD environments:
 
 .. code-block:: yaml
 
@@ -177,7 +177,7 @@ Where can I get more help?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. **Documentation**: Check the other sections of this documentation
-2. **Command help**: Use ``tfmate --help`` or ``tfmate <command> --help``
+2. **Command help**: Use ``{{cookiecutter.project_python_name}} --help`` or ``{{cookiecutter.project_python_name}} <command> --help``
 3. **Verbose mode**: Use ``--verbose`` for detailed error information
 4. **GitHub issues**: Report bugs or request features on the project repository
 
@@ -189,8 +189,6 @@ When reporting a bug, please include:
 1. **Command used**: The exact command that failed
 2. **Error message**: The complete error output
 3. **Environment**: OS, Python version, tfmate version
-4. **Terraform version**: The Terraform version being used
-5. **Backend type**: Local, S3, HTTP, or TFE
 6. **Verbose output**: Use ``--verbose`` and include the output
 
 Example bug report:

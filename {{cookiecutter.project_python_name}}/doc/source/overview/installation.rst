@@ -15,7 +15,7 @@ Installation Methods
 --------------------
 
 From PyPI with ``pip``
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -24,7 +24,7 @@ From PyPI with ``pip``
 
 
 From PyPI with ``uv``
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -35,7 +35,7 @@ From PyPI with ``uv``
     {{cookiecutter.project_python_name}} --help
 
 From PyPI with ``pipx``
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -44,7 +44,7 @@ From PyPI with ``pipx``
 
 
 From Source
-~~~~~~~~~~~
+^^^^^^^^^^^
 
 If you want to install from the latest development version:
 
