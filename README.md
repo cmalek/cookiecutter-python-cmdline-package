@@ -1,4 +1,4 @@
-# cookiecutter-cmdline-package
+# cookiecutter-python-cmdline-package
 
 This cookiecutter template constructs a new python click + rich command line package suitable for publishing to PyPI and documentation to readthedocs.org
 
@@ -13,7 +13,7 @@ In the below instructions:
 
 ```bash
 > uv tool install cookiecutter
-> cookiecutter git@bitbucket.org:caltech-imss-ads/ads-django-cookiecutter.git
+> cookiecutter https://github.com/cmalek/cookiecutter-python-cmdline-package
 ```
 
 **NOTES**:
@@ -116,10 +116,13 @@ This should:
 
 * Bump the version of your package in these files:
 
-    * `pyproject.toml`
     * `my_project/__init__.py`
     * `Makefile`
+    * `pyproject.toml`
     * `doc/source/conf.py`
+    * `doc/source/index.rst`
+    * `doc/srouce/overview/configuration.rst`
+    * `my_project/settings.py`
 
 * Tag the current revision in git with the new version number
 * Build the sdist and wheel distributions for your package
