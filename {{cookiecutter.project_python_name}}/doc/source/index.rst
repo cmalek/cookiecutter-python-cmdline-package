@@ -3,61 +3,81 @@
 ========
 
 .. toctree::
-   :caption: Overview
+   :maxdepth: 2
+   :caption: Getting Started
    :hidden:
 
-   overview/quickstart
    overview/installation
-   overview/configuration
+   overview/quickstart
+
+.. toctree::
+   :maxdepth: 2
+   :caption: User Guide
+   :hidden:
+
    overview/usage
+   overview/configuration
    overview/faq
 
 .. toctree::
-   :caption: Runbook
+   :maxdepth: 2
+   :caption: Development
    :hidden:
 
    runbook/contributing
    runbook/coding_standards
 
 .. toctree::
+   :maxdepth: 2
    :caption: Reference
    :hidden:
 
    changelog
-   api/models
+
+Current version is |release|.
+
+``{{cookiecutter.project_python_name}}`` is a Python command-line tool for
+__FILL_ME_IN__
+
+Core Features
+-------------
+
+{{cookiecutter.project_python_name}} provides the following key features:
+
+**Core Feature 1**
+    - **Highlight 1**: Describe a part of feature 1
+    - **Highlight 2**: Describe a part of feature 1
+
+**Core Feature 2**
+    - **Highlight 1**: Describe a part of feature 2
+    - **Highlight 2**: Describe a part of feature 2
 
 
-This is the ``{{cookiecutter.project_python_name}}`` project, an command line project that implements __FILL_THIS__IN__.
+Getting Started
+---------------
 
-Overview
---------
+To get started with {{cookiecutter.project_python_name}}:
 
-This project provides a `click <https://click.palletsprojects.com/en/8.0.x/>`_
-command line interface named ``{{cookiecutter.project_python_name}}`` that is the home of various bits of helper code that help us __FILL_THIS__IN__.
+1. **Installation**: Follow the :doc:`/overview/installation` guide
+2. **Quick Start**: See the :doc:`/overview/quickstart` guide for basic usage
+3. **Usage Guide**: Learn about commands and options in :doc:`/overview/usage`
+4. **Configuration**: Learn about configuration options in :doc:`/overview/configuration`
+5. **FAQ**: Check the :doc:`/overview/faq` section for common questions and troubleshooting
 
-Installation
+For developers, see the :doc:`/runbook/contributing` and :doc:`/runbook/coding_standards` guides.
+
+Requirements
 ------------
 
-First, you will need to install `uv <https://docs.astral.sh/uv/>`_:
+- Python 3.11 or later
 
-.. code-block:: bash
+Common Use Cases
+----------------
 
-   $ sh -c "$(curl -fsSL https://astral.sh/uv/install)"
+**Core Use Case 1**
+    - Aspect 1
+    - Aspect 2
 
-Ensure you have a system python installed that is at least version 3.11, though we prefer 3.13.  You
-can do this via ``uv``.
-
-.. code-block:: bash
-
-   $ uv python install 3.13
-
-Then you can install the script like so:
-
-.. code-block:: bash
-
-   $ uv tool install --python 3.13 {{cookiecutter.project_python_name}}/{{cookiecutter.project_python_name}}
-
-This will install the ``{{cookiecutter.project_python_name}}`` command line tool in your path.
-
-If you want to work on this codebase, see :doc:`/runbook/contributing` for more
-information.
+**Core Use Case 2**
+    - Aspect 1
+    - Aspect 2

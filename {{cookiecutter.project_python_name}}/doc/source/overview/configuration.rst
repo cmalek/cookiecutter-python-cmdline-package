@@ -6,7 +6,7 @@ This guide covers all configuration options for the
 configuration files, environment variables, and command-line options.
 
 ``{{cookiecutter.project_python_name}}`` is a __FILL_ME_IN__.  The default
-configuration should work for most use cases, but you can customize behavior
+configuration should work for most use cases, but you can customise behavior
 through various configuration methods.
 
 Configuration Methods

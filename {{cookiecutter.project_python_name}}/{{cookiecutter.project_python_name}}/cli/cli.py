@@ -43,7 +43,7 @@ def cli(
     ctx.obj["config_file"] = config_file
 
     if config_file:
-        # This will be picked up by the Settings class's settings_customize_sources method
+        # This will be picked up by the Settings class's settings_customise_sources method
         os.environ["{{cookiecutter.project_python_name|upper}}_CONFIG_FILE"] = config_file
 
     # Load settings
@@ -69,8 +69,9 @@ def version() -> None:
     table.add_column("Version", justify="left", style="yellow", no_wrap=True)
 
     table.add_row("{{cookiecutter.project_python_name}}", str({{cookiecutter.project_python_name}}.__version__))
-    table.add_row("click", str(click.__version__))
+    table.add_row("click", str(Distribution.from_name("click").version))
     table.add_row("rich", str(Distribution.from_name("rich").version))
+    table.add_row("pydantic", str(Distribution.from_name("pydantic").version))
 
     console.print(table)
 
@@ -82,11 +83,7 @@ def show_settings(ctx: click.Context):
     """
     output_format = ctx.obj.get("output", "table")
     verbose = ctx.obj.get("verbose", False)
-
-    # Create a fresh Settings instance to avoid test state crossover
-    # If a config file was specified, use it
-    config_file = ctx.obj.get("config_file")
-    settings = Settings.from_file(config_file) if config_file else Settings()
+    settings = ctx.obj.get("settings")
 
     if output_format == "json":
         click.echo(json.dumps(settings.model_dump()))

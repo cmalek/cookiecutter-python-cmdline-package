@@ -1,6 +1,7 @@
 """
 Settings management for {{cookiecutter.project_python_name}}.
 """
+from __future__ import annotations
 
 import os
 from pathlib import Path
@@ -9,10 +10,13 @@ from typing import Literal
 from pydantic import Field
 from pydantic_settings import (
     BaseSettings,
+    EnvSettingsSource,
     SettingsConfigDict,
     PydanticBaseSettingsSource,
     TomlConfigSettingsSource,
 )
+
+from {{cookiecutter.project_python_name}}.exc import ConfigurationError
 
 
 class Settings(BaseSettings):
@@ -20,10 +24,10 @@ class Settings(BaseSettings):
     Application settings with cascading configuration support.
 
     Note:
-
         The app_name and app_version fields are readonly (frozen=True) and
         cannot be overridden via configuration files or environment variables.
         Other fields remain configurable as normal.
+
     """
 
     model_config = SettingsConfigDict(
@@ -57,7 +61,7 @@ class Settings(BaseSettings):
     log_file: str | None = Field(default=None, description="Log file path")
 
     @classmethod
-    def settings_customize_sources(
+    def settings_customise_sources(
         cls,
         settings_cls: type[BaseSettings],
         init_settings: PydanticBaseSettingsSource,
@@ -82,11 +86,11 @@ class Settings(BaseSettings):
         if os.name == "nt":  # Windows
             global_config = (
                 Path(os.environ.get("PROGRAMDATA", "C:/ProgramData"))
-                / ".{{cookiecutter.project_python_name}}.toml"
+                / "{{cookiecutter.project_python_name}}.toml"
             )
         else:  # Unix-like
             global_config = Path(
-                "/etc/{{cookiecutter.project_python_name}}/.{{cookiecutter.project_python_name}}.toml"
+                "/etc/cookiecutter.project_python_name}}.toml"
             )
 
         if global_config.exists():
@@ -94,7 +98,7 @@ class Settings(BaseSettings):
 
         # User home configuration
         user_config = (
-            Path.home() / ".config" / ".{{cookiecutter.project_python_name}}.toml"
+            Path.home() / ".{{cookiecutter.project_python_name}}.toml"
         )
         if user_config.exists():
             config_paths.append(user_config)
@@ -117,10 +121,15 @@ class Settings(BaseSettings):
         if config_paths:
             # Use the last (highest precedence) config file
             config_file_path = config_paths[-1]
-            return (TomlConfigSettingsSource(settings_cls, config_file_path),)
+            return (TomlConfigSettingsSource(settings_cls, config_file_path.resolve()),)
 
-        # Fall back to environment variables and defaults
-        return cls()
+        # Fallback: return the defaults you were passed in, preserving SettingsConfigDict behavior
+        return (
+            init_settings,
+            env_settings,
+            dotenv_settings,
+            file_secret_settings,
+        )
 
     def get_config_paths(self) -> list[Path]:
         """
@@ -159,3 +168,16 @@ class Settings(BaseSettings):
             paths.append(local_config)
 
         return paths
+
+    def validate_settings(self) -> None:
+        """
+        Validate settings and ensure required directories exist.
+
+        Raises:
+            ConfigurationError: If settings are invalid
+
+        """
+        # Validate output format
+        if self.default_output_format not in ["table", "json", "text"]:
+            msg = f"Invalid output format: {self.default_output_format}"
+            raise ConfigurationError(msg)
